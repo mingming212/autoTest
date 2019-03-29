@@ -15,12 +15,13 @@ public class LoginTest {
         ProfilePage profilePage=mainPage.gotoProfile();
         LoginPage loginPage=profilePage.gotoLogin();
         loginPage.passwordFail("12345678","1234");
-//        loginPage.password("xxxx","xxx");
+//        loginPage.password?("xxxx","xxx");
 //        assertThat(toast,equalTo("手机号码填写错误"));
 
-        //testBranch
-修改了本地，pull远端
-                合并以后有冲突，在本分支上显示冲突，但不上传到github，本地push后就是merge后的本地分支
+
+
+
+
     }
 
 
