@@ -15,6 +15,8 @@ public class LoginTest {
         ProfilePage profilePage=mainPage.gotoProfile();
         LoginPage loginPage=profilePage.gotoLogin();
         loginPage.passwordFail("12345678","1234");
+
+        1
 //        loginPage.password?("xxxx","xxx");
 //        assertThat(toast,equalTo("手机号码填写错误"));
 
