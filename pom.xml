@@ -26,6 +26,13 @@
             <artifactId>hamcrest</artifactId>
             <version>2.1</version>
         </dependency>
-    </dependencies>
 
+    <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-core -->
+    <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-core</artifactId>
+        <version>2.1</version>
+
+    </dependency>
+</dependencies>
 </project>
