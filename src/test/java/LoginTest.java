@@ -17,19 +17,9 @@ public class LoginTest {
         MainPage mainPage=MainPage.start();
         ProfilePage profilePage=mainPage.gotoProfile();
         LoginPage loginPage=profilePage.gotoLogin();
-<<<<<<< HEAD
 
-=======
-
-
-        1
-                2
-//        loginPage.password?("xxxx","xxx");
-//        assertThat(toast,equalTo("手机号码填写错误"));
->>>>>>> refs/remotes/origin/master
-
-
-
+        loginPage.passwordFail("12345678","123411");
+        assertThat(loginPage.getMessage(),equalTo("手机号码填写错误"));
 
 
     }
