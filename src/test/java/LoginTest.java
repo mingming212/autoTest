@@ -1,4 +1,5 @@
 import driver.Driver;
+import org.junit.Assert;
 import org.testng.annotations.Test;
 import page.LoginPage;
 import page.MainPage;
@@ -18,17 +19,15 @@ public class LoginTest {
         MainPage mainPage=MainPage.start();
         ProfilePage profilePage=mainPage.gotoProfile();
         LoginPage loginPage=profilePage.gotoLogin();
-        loginPage.passwordFail("12345678901","123456");
+        loginPage.passwordFail("1800136761","123456");
         String msg=loginPage.getMessage();
 
-
-        assertThat(msg,equalTo("手机号码填写错误"));
-
-
-
+//        assertThat(msg,equalTo("手机号码填写错误"));//hamcrest执行失败
+        Assert.assertEquals(msg,"手机号码填写错误");
 
 
     }
+
 
 
 
