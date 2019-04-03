@@ -17,10 +17,10 @@ public class LoginTest_Junit {
         MainPage mainPage=MainPage.start();
         ProfilePage profilePage=mainPage.gotoProfile();
         LoginPage loginPage=profilePage.gotoLogin();
-        loginPage.passwordFail("180013676","123456");
+        loginPage.passwordFail("18001367612","123456");
         String msg=loginPage.getMessage();
 
-//        assertThat(msg,equalTo("手机号码填写错误"));//hamcrest执行失败
+        assertThat(msg,equalTo("手机号码填写错误"));//hamcrest执行失败
 //        Assert.assertEquals(msg,"手机号码填写错误");
 
     }

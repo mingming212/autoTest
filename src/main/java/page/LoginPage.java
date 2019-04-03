@@ -2,7 +2,7 @@ package page;
 
 import driver.Driver;
 import org.openqa.selenium.By;
-import sun.java2d.cmm.Profile;
+//import sun.java2d.cmm.Profile;
 
 /**
  * Created by helena.liu on 2019/3/25.
@@ -35,6 +35,7 @@ public class LoginPage extends BasePage{
 
     public ProfilePage gotoProfile(){
         find(By.id("iv_close")).click();
+        find(By.xpath("//*[contains(@resource-id, 'iv_close') or contains(@resource-id, 'iv_action_back')]")).click();
         return new ProfilePage();
     }
 
