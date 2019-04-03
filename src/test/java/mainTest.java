@@ -3,7 +3,7 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 
-import junit.framework.TestCase;
+//import junit.framework.TestCase;
 /*import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;*/
@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 //import static org.hamcrest.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
 
 //import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -111,8 +111,8 @@ int i=0;
             driver.findElementByXPath("(//*[@resource-id='com.xueqiu.android:id/table_item_first_column_text1'])[last()]").click();
             Thread.sleep(3000);
 
-            assertEquals("*ST康达",driver.findElementById("com.xueqiu.android:id/action_bar_stock_name").getText());
-            assertEquals("19.05",driver.findElementById("com.xueqiu.android:id/stock_current_price").getText());
+//            assertEquals("*ST康达",driver.findElementById("com.xueqiu.android:id/action_bar_stock_name").getText());
+//            assertEquals("19.05",driver.findElementById("com.xueqiu.android:id/stock_current_price").getText());
 //            assertThat(1,equalTo(2));
 
 
