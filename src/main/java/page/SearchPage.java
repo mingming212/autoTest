@@ -35,9 +35,8 @@ public class SearchPage extends BasePage{
         WebElement webe= (WebElement) Driver.getCurrentDriver().findElements(By.id("stockName")).get(0);
         WebElement webe2=  Driver.getCurrentDriver().findElement(By.id("stockName"));
 
-
        /* for(WebElement e: Driver.getCurrentDriver().findElements(By.id("stockName"))){
-            list.add(e.getText());
+            list.add(e.getText());sdf
         }*/
         return this;
     }
