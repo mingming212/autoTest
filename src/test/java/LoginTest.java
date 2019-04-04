@@ -36,10 +36,10 @@ public class LoginTest {
         LoginPage loginPage=profilePage.gotoLogin();
         loginPage.passwordFail(username,password);
         String msg=loginPage.getMessage();
-
-        assertThat(msg,equalTo(expected));
         profilePage=loginPage.gotoProfile();
+        assertThat(msg,equalTo(expected));
 
+System.out.println("ceshi  assert之后执行了这一条");
     }
 
 

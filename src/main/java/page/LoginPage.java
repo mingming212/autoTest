@@ -34,7 +34,7 @@ public class LoginPage extends BasePage{
     }
 
     public ProfilePage gotoProfile(){
-        find(By.id("iv_close")).click();
+//        find(By.id("iv_close")).click();
         find(By.xpath("//*[contains(@resource-id, 'iv_close') or contains(@resource-id, 'iv_action_back')]")).click();
         return new ProfilePage();
     }

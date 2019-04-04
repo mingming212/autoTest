@@ -2,6 +2,8 @@ package driver;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -9,7 +11,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class Driver {
-    private static AndroidDriver driver;
+    private static AppiumDriver driver;
     public static void start(){
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 //        desiredCapabilities.setCapability("deviceName", "emulator-5554");
