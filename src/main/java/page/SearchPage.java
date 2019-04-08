@@ -19,9 +19,10 @@ public class SearchPage extends BasePage{
 
     public SearchPage search(String keyword){
         find(searchInSearchPage).sendKeys(keyword);
-        find(searchResult);
+
+        /*find(searchResult);
         find(addBtn);
-        find(moveBtn);
+        find(moveBtn);*/
         return this;
     }
 
@@ -30,15 +31,15 @@ public class SearchPage extends BasePage{
         return new MainPage();
     }
 
-    public SearchPage getAll(){
+    public ArrayList<String> getAll(){
         ArrayList<String> list=new ArrayList<String>();
-        WebElement webe= (WebElement) Driver.getCurrentDriver().findElements(By.id("stockName")).get(0);
-        WebElement webe2=  Driver.getCurrentDriver().findElement(By.id("stockName"));
+//        WebElement webe= (WebElement) Driver.getCurrentDriver().findElements(By.id("stockName")).get(0);
+//        WebElement webe2=  Driver.getCurrentDriver().findElement(By.id("stockName"));
 
-       /* for(WebElement e: Driver.getCurrentDriver().findElements(By.id("stockName"))){
-            list.add(e.getText());sdf
-        }*/
-        return this;
+        for(WebElement e: Driver.getCurrentDriver().findElements(By.id("stockName"))){
+            list.add(e.getText());
+        }
+        return list;
     }
 
     public SearchPage getByStock(){
@@ -47,6 +48,9 @@ public class SearchPage extends BasePage{
     }
 
     public SearchPage addSelected(){
+        WebElement select=find(By.xpath("//*[contains(@resource-id,'follow') and contains(@resource-id,'_btn')]"));
+        select.getAttribute("");
+
         return this;
     }
 

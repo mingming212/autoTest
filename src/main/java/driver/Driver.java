@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class Driver {
-    private static AppiumDriver driver;
+    private static AppiumDriver<WebElement> driver;
     public static void start(){
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 //        desiredCapabilities.setCapability("deviceName", "emulator-5554");
@@ -38,7 +38,7 @@ public class Driver {
         driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
     }
 
-    public static AppiumDriver getCurrentDriver(){
+    public static AppiumDriver<WebElement> getCurrentDriver(){
         return driver;
     }
 }
