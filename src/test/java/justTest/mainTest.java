@@ -1,3 +1,4 @@
+package justTest;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
@@ -45,7 +46,7 @@ public class mainTest {
 //            desiredCapabilities.setCapability("app","/Users/helena.liu/Downloads/robothousekeeper_v1.2.0.2041_mtest_201901141453.apk");
             desiredCapabilities.setCapability("appPackage", "com.xueqiu.android");
             desiredCapabilities.setCapability("appActivity", "com.xueqiu.android.view.WelcomeActivityAlias");
-            desiredCapabilities.setCapability("app","/Users/helena.liu/Downloads/com.xueqiu.android_11.15_200.apk");
+//            desiredCapabilities.setCapability("app","/Users/helena.liu/Downloads/com.xueqiu.android_11.15_200.apk");
             desiredCapabilities.setCapability("platformName", "android");
             desiredCapabilities.setCapability("noReset","true");
 //            desiredCapabilities.setCapability("fullReset","true");

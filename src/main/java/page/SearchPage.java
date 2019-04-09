@@ -15,7 +15,7 @@ public class SearchPage extends BasePage{
     By cancelBtn=By.id("action_close");
     By searchResult=text("拼多多");
     By addBtn=locate("follow_btn");//搜索结果右边的加号按钮，点击后添加到自选
-    By moveBtn=locate("followed_btn");//点击后从自选中删除
+    By moveBtn=locate("followed_btn");//从自选中删除
 
     public SearchPage search(String keyword){
         find(searchInSearchPage).sendKeys(keyword);
@@ -47,11 +47,18 @@ public class SearchPage extends BasePage{
         return this;
     }
 
-    public SearchPage addSelected(){
+    public ArrayList<String> addSelected(){
+        ArrayList<String> arrayList=new ArrayList<String>();
         WebElement select=find(By.xpath("//*[contains(@resource-id,'follow') and contains(@resource-id,'_btn')]"));
-        select.getAttribute("");
-
-        return this;
+        String selectID=select.getAttribute("resourceId");
+        arrayList.add(selectID);
+        select.click();
+        WebElement select2=find(By.xpath("//*[contains(@resource-id,'follow') and contains(@resource-id,'_btn')]"));
+        String selectID2=select2.getAttribute("resourceId");
+        arrayList.add(selectID2);
+//        System.out.println("2222: "+arrayList.get(0)+","+arrayList.get(1));
+        select2.click();
+        return arrayList;
     }
 
     public SearchPage removeSelected(){

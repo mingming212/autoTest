@@ -1,5 +1,6 @@
-import org.junit.Test;
+//import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import page.MainPage;
@@ -32,8 +33,8 @@ public class SearchTest {
 
     @Test
     public void 选择(){
-        searchPage.search("mi").addSelected();
-        assertThat(new ArrayList<String>(),hasItems(""));
+        ArrayList<String> array= searchPage.search("mi").addSelected();
+        assertThat(array,hasItems("com.xueqiu.android:id/followed_btn","com.xueqiu.android:id/follow_btn"));
     }
 
 

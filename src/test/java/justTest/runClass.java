@@ -1,3 +1,5 @@
+package justTest;
+
 import org.junit.runner.JUnitCore;
 
 public class runClass {

@@ -9,7 +9,13 @@ import org.openqa.selenium.WebElement;
  */
 public class BasePage {
     static WebElement find(By locator){
-        return Driver.getCurrentDriver().findElement(locator);
+        try{
+            System.out.println(locator+"---------"+Driver.getCurrentDriver().getPageSource());
+            return Driver.getCurrentDriver().findElement(locator);
+        }catch (Exception e){
+            Driver.getCurrentDriver().findElement(text("下次再说")).click();
+            return Driver.getCurrentDriver().findElement(locator);
+        }
     }
 
     static By locate(String locator){
