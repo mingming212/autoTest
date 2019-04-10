@@ -1,43 +1,44 @@
 //import org.junit.Test;
 
 import driver.Driver;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+
 import page.MainPage;
-import page.SearchPage;
 import page.ZixuanPage;
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ZixuanTest {
     static MainPage mainPage;
     static ZixuanPage zixuanPage;
     @BeforeAll
     static void beforeAll(){
-        Driver.getCurrentDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
         mainPage=MainPage.start();
         zixuanPage=mainPage.gotoZixuan();
+
     }
 
-//    点搜索，搜索后点击加入自选股，点返回，返回到自选首页，显示股票，长按删除，把页面上的所有股票都删了
-//    添加其他股票，搜索，点进去，详情页，添加自选，删除自选
-
+//   case步骤：在自选首页，点搜索，将第一个未加入自选的股票点击加入自选股，点返回，返回到自选首页，显示自选股票列表，长按删除，把页面上的所有自选股票都删了
     @Test
     public void 搜索添加自选(){
         zixuanPage.searchInZixuan("a");//搜索股票a
-        zixuanPage.addFirstSelected();//添加搜索出来的第一个股票
+        String selectedName= zixuanPage.addFirstSelected();//添加搜索出来的第一个股票
+        System.out.println("搜:"+selectedName);
+        zixuanPage.cancelSearch();//点击搜索框后面的取消按钮，回到自选首页
+        String firstInList=zixuanPage.getFirstInZixuan();//得到自选列表中的第一个自选股票
+        System.out.println("已选的:"+firstInList);
+        assertThat(firstInList,equalTo(selectedName));
+        //清理数据
         zixuanPage.removeAllSelected();//移除所有自选股票
 
     }
 
+    //   case步骤：自选首页，点击"添加其他股票"，搜索，点搜索结果进到股票详情页，点右下角的添加自选，再点有下角的设自选来删除自选
 
 
 
@@ -57,6 +58,14 @@ public class ZixuanTest {
 
 
 
+
+
+
+
+    @AfterAll
+    static void tearDowm(){
+        Driver.getCurrentDriver().quit();
+    }
 
 
 

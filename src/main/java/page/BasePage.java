@@ -13,6 +13,7 @@ public class BasePage {
             System.out.println(locator+"---------"+Driver.getCurrentDriver().getPageSource());
             return Driver.getCurrentDriver().findElement(locator);
         }catch (Exception e){
+            System.out.println(locator+"---------"+Driver.getCurrentDriver().getPageSource());
             Driver.getCurrentDriver().findElement(text("下次再说")).click();
             return Driver.getCurrentDriver().findElement(locator);
         }
@@ -29,6 +30,14 @@ public class BasePage {
     static By text(String content){
         return By.xpath("//*[@text='"+content+"']");
 
+    }
+
+    static void sleep(int sleepTime_millis){
+        try {
+            Thread.sleep(sleepTime_millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -14,10 +14,12 @@ import java.util.List;
  * Created by whs on 2019/4/2.
  */
 public class ZixuanPage extends BasePage{
-    By search=By.id("action_create_cube");//首页上的自选菜单
-    By searchEditText=By.id("search_input_text");
+    By search=By.id("action_create_cube");//自选首页上的搜索按钮
+    By searchEditText=By.id("search_input_text");//自选首页上的搜索框
     By add=By.id("follow_btn");//搜索页上的添加自选按钮
+//    By firstInSearch=By.id("stockName");//搜索结果中的第一个股票
     By cancel=By.id("action_close");//搜索页面上的取消按钮
+    By firstStock=By.id("portfolio_stockName");//自选列表中的第一个股票
 
     public ZixuanPage searchInZixuan(String keyword){
         find(search).click();
@@ -25,24 +27,37 @@ public class ZixuanPage extends BasePage{
         return this;
     }
 
-    public void addFirstSelected(){//搜索页
-        find(add).click();//添加股票
+    public String addFirstSelected(){//搜索页
+        WebElement selectBtn=find(add);
+        //根据选择按钮，获取他的前一个兄弟节点的name，即是股票名字
+        //获取股票名字的代码不能单独放在一个方法中：因为这个方法里有click按钮，这个方法执行后，页面就变了
+        String selectedName=find(By.xpath("//*[@resource-id='com.xueqiu.android:id/follow_btn']/../preceding-sibling::*/*[@resource-id='com.xueqiu.android:id/stockName']")).getText();
+        System.out.println("根据兄弟节点计算出的添加的股票名字："+selectedName);
+        selectBtn.click();//添加股票
+        return selectedName;
+    }
+
+
+    public String getFirstInZixuan(){
+        WebElement e=find(firstStock);
+        String firstStockName=e.getText();
+        return firstStockName;//第一个股票的名字
+    }
+
+    public void cancelSearch(){
         find(cancel).click();//点击取消按钮，回到自选
     }
 
     public void removeAllSelected(){
         List<WebElement> list= Driver.getCurrentDriver().findElements(By.id("portfolio_stockName"));
-        for(WebElement e: list){
+        System.out.println("需要删除的自选个数："+list.size());
+        for(int i=0;i<list.size();i++){
             TouchAction touch=new TouchAction(Driver.getCurrentDriver());
-            touch.longPress(ElementOption.element(e));
+            touch.longPress(ElementOption.element(find(firstStock)));
             touch.release();
             touch.perform();
-            find(By.id("md_title")).click();
+            find(text("删除")).click();
         }
     }
 
-    public void removeOne_longPress(){
-        TouchAction touch=new TouchAction(Driver.getCurrentDriver());
-//        touch.longPress().release().perform();
-    }
 }

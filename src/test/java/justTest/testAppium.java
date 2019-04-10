@@ -1,11 +1,13 @@
 package justTest;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.ElementOption;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -33,28 +35,21 @@ public class testAppium {
     @Test
     public void findEle() throws InterruptedException {
 //        Thread.sleep(3000);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        try {
-            String text=driver.findElement(By.id("com.xueqiu.android:id/tab_name")).getAttribute("text");
-            System.out.println("text: "+text);
-//        }catch (Exception e){
-//            System.out.println("未找到 1");
-//        }
-
-        try {
-//            driver.findElement(By.id("com.xueqiu.android:id/tab_name")).getAttribute("id");
-        }catch (Exception e){
-            System.out.println("未找到 2");
-        }
-
         try {
             String resourceId=driver.findElement(By.id("com.xueqiu.android:id/tab_name")).getAttribute("resourceId");
             System.out.println("1111111: "+resourceId);
-
         }catch (Exception e){
             System.out.println("未找到 3");
         }
         System.out.println("222222: ");
+    }
+
+    public void longPress(){//长按
+        WebElement e=  driver.findElement(By.id("portfolio_stockName"));
+        TouchAction touch=new TouchAction(driver);
+        touch.longPress(ElementOption.element(e));
+        touch.release();
+        touch.perform();
     }
 
     @AfterAll

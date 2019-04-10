@@ -35,10 +35,12 @@ public class Driver {
             e.printStackTrace();
         }
         driver = new AndroidDriver(remoteUrl, desiredCapabilities);
-        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     public static AppiumDriver<WebElement> getCurrentDriver(){
         return driver;
     }
+
+
 }

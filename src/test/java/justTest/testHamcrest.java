@@ -7,8 +7,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class testHamcrest {
