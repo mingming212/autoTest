@@ -38,42 +38,29 @@ public class ZixuanTest {
 
     }
 
-    //   case步骤：自选首页，点击"添加其他股票"，搜索，点搜索结果进到股票详情页，点右下角的添加自选，再点有下角的设自选来删除自选
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //   case步骤：自选首页，点击推荐的股票，进到股票详情页，点右下角的添加自选，再点有下角的设自选来删除自选
+    @Test
+    public void 详情页添加自选(){
+        //前提：删除所有自选，这块没写~
+        String recommend_stock_name=zixuanPage.enterFirstRecommend();
+        String stockName=zixuanPage.getStockNameInDetails();
+        zixuanPage.addZixuan();
+        zixuanPage.back();//返回键，回到自选首页
+        String firstInList=zixuanPage.getFirstInZixuan();//得到自选列表中的第一个自选股票
+        System.out.println("已选的:"+firstInList);
+        assertThat(firstInList,equalTo(stockName));
+        zixuanPage.enterStock(stockName);
+        zixuanPage.deleteZixuan();
+        zixuanPage.back();//返回键，回到自选首页
+        //最后来个验证是否删除成功
+        Boolean isExist=zixuanPage.addBtnExist();//判断自选首页上的推荐按钮"加入自选股"按钮是否存在
+        assertThat(true,equalTo(isExist));
+    }
 
 
     @AfterAll
     static void tearDowm(){
         Driver.getCurrentDriver().quit();
     }
-
-
-
-
-
-
-
-
-
 
 }

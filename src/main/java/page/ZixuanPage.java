@@ -21,6 +21,13 @@ public class ZixuanPage extends BasePage{
     By cancel=By.id("action_close");//搜索页面上的取消按钮
     By firstStock=By.id("portfolio_stockName");//自选列表中的第一个股票
 
+    By recommendStock=By.id("com.xueqiu.android:id/recommend_stock_one");//自选首页，推荐的第一个股票
+    By stockNameInDetails=By.id("com.xueqiu.android:id/action_bar_stock_name");//股票详情页，最上面的股票名字
+    By addZixuanBtn=By.xpath("//*[@text='加自选']");//右下角的加自选按钮
+    By setZixuanBtn=By.xpath("//*[@text='设自选']");
+    By deleteZixuanBtn=By.xpath("//*[@text='删除自选']");
+    By addAllCommend=By.xpath("//*[@text='加入自选股']");
+
     public ZixuanPage searchInZixuan(String keyword){
         find(search).click();
         find(searchEditText).sendKeys(keyword);
@@ -52,12 +59,55 @@ public class ZixuanPage extends BasePage{
         List<WebElement> list= Driver.getCurrentDriver().findElements(By.id("portfolio_stockName"));
         System.out.println("需要删除的自选个数："+list.size());
         for(int i=0;i<list.size();i++){
-            TouchAction touch=new TouchAction(Driver.getCurrentDriver());
-            touch.longPress(ElementOption.element(find(firstStock)));
-            touch.release();
-            touch.perform();
-            find(text("删除")).click();
+            removeFirstStock();
         }
     }
 
+    public void removeFirstStock(){
+        TouchAction touch=new TouchAction(Driver.getCurrentDriver());
+        touch.longPress(ElementOption.element(find(firstStock)));
+        touch.release();
+        touch.perform();
+        find(text("删除")).click();
+    }
+
+    public String enterFirstRecommend() {
+        sleep(2000);
+        WebElement e=find(recommendStock);
+        String recommend_stock_name=e.getText();
+        e.click();
+        return recommend_stock_name;
+    }
+
+    public String getStockNameInDetails() {
+        String stockName=find(stockNameInDetails).getText();
+        return stockName;
+    }
+
+    public void addZixuan() {
+        find(addZixuanBtn).click();
+
+    }
+
+    public void back() {
+        Driver.getCurrentDriver().navigate().back();
+    }
+
+    public void enterStock(String stockName) {
+        find(text(stockName)).click();
+    }
+
+    public void deleteZixuan() {
+        find(setZixuanBtn).click();
+        find(deleteZixuanBtn).click();
+    }
+
+    public Boolean addBtnExist() {
+        try{
+            find(addAllCommend);
+            return true;//查找成功，返回true
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

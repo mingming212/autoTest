@@ -13,8 +13,10 @@ public class BasePage {
             System.out.println(locator+"---------"+Driver.getCurrentDriver().getPageSource());
             return Driver.getCurrentDriver().findElement(locator);
         }catch (Exception e){
-            System.out.println(locator+"---------"+Driver.getCurrentDriver().getPageSource());
-            Driver.getCurrentDriver().findElement(text("下次再说")).click();
+            System.out.println("没找到 "+locator+"---------"+Driver.getCurrentDriver().getPageSource());
+            Driver.getCurrentDriver().findElement(By.xpath("//*[contains(@text,'下次再说') or contains(@text,'允许')]")).click();
+            sleep(1000);
+            System.out.println("下次再说/允许"+"---------"+Driver.getCurrentDriver().getPageSource());
             return Driver.getCurrentDriver().findElement(locator);
         }
     }
