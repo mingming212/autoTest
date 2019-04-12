@@ -3,10 +3,12 @@ package justTest;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.ElementOption;
+import io.appium.java_client.touch.offset.PointOption;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -50,6 +52,18 @@ public class testAppium {
         touch.longPress(ElementOption.element(e));
         touch.release();
         touch.perform();
+    }
+
+    @Test
+    public void getLocat(){
+
+        WebElement e=  driver.findElement(By.id("com.xueqiu.android:id/tv_search"));
+        Point point=e.getLocation();
+        System.out.println("1----"+point.toString());
+        TouchAction touch =new TouchAction(driver);
+        PointOption pointOption=new PointOption();
+        touch.press(PointOption.point(353,105));
+//        touch.tap(1,2);
     }
 
     @AfterAll
