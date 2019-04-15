@@ -47,7 +47,7 @@ public class testAppium {
         if(driver.getPageSource().contains("com.android.keyguard:id/magazinelockscreen")){//当前页面是唤醒后的背景图页
             System.out.println("当前activity： "+driver.currentActivity());
 //            unlock_secret();//输入密码解锁
-            unlock_swip();//手势密码解锁
+            unlock_gesture();//手势密码解锁
         }
     }
 
