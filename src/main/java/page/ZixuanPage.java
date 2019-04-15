@@ -2,6 +2,7 @@ package page;
 
 import driver.Driver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by whs on 2019/4/2.
  */
-public class ZixuanPage extends BasePage{
+public class  ZixuanPage extends BasePage{
     By search=By.id("action_create_cube");//自选首页上的搜索按钮
     By searchEditText=By.id("search_input_text");//自选首页上的搜索框
     By add=By.id("follow_btn");//搜索页上的添加自选按钮
