@@ -1,8 +1,10 @@
 package justTest;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.screenrecording.BaseStartScreenRecordingOptions;
+import io.appium.java_client.screenrecording.ScreenRecordingUploadOptions;
+import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
 import org.junit.jupiter.api.AfterAll;
@@ -10,13 +12,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,14 +42,14 @@ public class testAppium {
         URL remoteUrl = new URL("http://localhost:4723/wd/hub");
         driver=new AndroidDriver(remoteUrl,capabilities);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
         System.out.println("是否黑屏："+isScreenLock() );
         if(isScreenLock()){//如果黑屏，去唤醒屏幕
             Runtime.getRuntime().exec("adb shell input keyevent 26");//模拟power键
             System.out.println("已唤醒屏幕" );
         }
-        System.out.println("-----"+driver.getPageSource());
-        System.out.println("---------"+driver.getPageSource().contains("com.android.keyguard:id/pinEntry"));
-//        if(driver.getPageSource().contains("com.android.keyguard:id/pinEntry")){//当前页面是锁屏
+//        System.out.println("-----"+driver.getPageSource());
+//        System.out.println("---------"+driver.getPageSource().contains("com.android.keyguard:id/pinEntry"));
         if(driver.getPageSource().contains("com.android.keyguard:id/magazinelockscreen")){//当前页面是唤醒后的背景图页
             System.out.println("当前activity： "+driver.currentActivity());
 //            unlock_secret();//输入密码解锁
@@ -51,6 +57,7 @@ public class testAppium {
         }
     }
 
+    //判断是否锁屏
     public static boolean isScreenLock() throws IOException {
         Runtime runtime=Runtime.getRuntime();
         Process process=runtime.exec("adb shell dumpsys power |grep 'Display Power'");
@@ -71,36 +78,40 @@ public class testAppium {
 //    @Test
     //密码解锁
     public static void unlock_secret() throws IOException {
-//        if (isScreenLock() == false) {
             System.out.println("屏幕已唤醒，现在去输入密码解锁" );
             TouchAction touch = new TouchAction(driver);
+            //唤醒后，滑动页面，使进入输入密码页
             touch.press(PointOption.point(233, 555)).moveTo(PointOption.point(800, 555)).release().perform();
             //输入密码0000
             for(int i=0;i<4;i++) {
                 driver.findElement(By.id("com.android.keyguard:id/key0")).click();
             }
             sleep(5000);
-//        }
     }
 
-    //手势密码解锁
+    //手势密码解锁，以华为MT7为例，这里的手势密码是一个"了"字
     public static void unlock_gesture() throws InterruptedException {
         System.out.println("屏幕已唤醒，现在去手势密码解锁" );
-        TouchAction touch = new TouchAction(driver);
-        touch.press(PointOption.point(233, 555)).moveTo(PointOption.point(800, 555)).release().perform();
-//        TouchAction touch=new TouchAction(driver);
-        PointOption point1=PointOption.point(269,1071);
-        PointOption point2=PointOption.point(809,1071);
-        PointOption point3=PointOption.point(539,1341);
-        PointOption point4=PointOption.point(539,1611);
-        PointOption point5=PointOption.point(269,1341);
+        int width=driver.manage().window().getSize().width;
+        int height=driver.manage().window().getSize().height;
+        System.out.println("屏幕大小："+width+" X "+height );
 
-//        touch.press(point1).wait(1000);
-//        touch.moveTo(point2).wait(1000);
-//        touch.moveTo(point3).wait(1000);
-        sleep(2000);
-        touch.press(point1).moveTo(point2).moveTo(point3).release().perform();
-        touch.release().perform();
+        TouchAction touch = new TouchAction(driver);
+        //唤醒后，滑动页面，使进入输入密码页
+        touch.press(PointOption.point(233, 455)).moveTo(PointOption.point(800, 455)).release().perform();
+        PointOption point1=PointOption.point(269,1071);//坐标绝对值，不能用，要用偏移量
+        PointOption point2=PointOption.point(809,1071);//坐标绝对值，不能用，要用偏移量
+        PointOption point3=PointOption.point(539,1341);//坐标绝对值，不能用，要用偏移量
+        PointOption point4=PointOption.point(539,1611);//坐标绝对值，不能用，要用偏移量
+        PointOption point5=PointOption.point(269,1341);//坐标绝对值，不能用，要用偏移量
+
+        sleep(1000);
+        touch.press(PointOption.point(269, 1071))
+                .moveTo(PointOption.point(133*4, 0))
+                .moveTo(PointOption.point(-133*2,133*2))
+                .moveTo(PointOption.point(0,133*2))
+                .moveTo(PointOption.point(-133*2,-133*2))
+                .release().perform();
         sleep(4000);
 
     }
@@ -124,6 +135,10 @@ public class testAppium {
         touch.longPress(ElementOption.element(e));
         touch.release();
         touch.perform();
+
+        //以下是设置长按保持时长的方式：
+        touch.longPress(new LongPressOptions().withElement(ElementOption.element(e)).withDuration(Duration.ofSeconds(6))).perform();
+        touch.longPress(new LongPressOptions().withPosition(PointOption.point(259,1071)).withDuration(Duration.ofSeconds(6))).perform();
     }
 
     @Test
@@ -154,6 +169,40 @@ public class testAppium {
         System.out.println("是否可被点击："+e.getAttribute("clickable"));
         e.click();
         Thread.sleep(10000);
+    }
+
+    @Test
+    //测试toast，失败！！！，总是获取不到，找不到元素
+    public void testToast(){
+        //步骤：进入自选，点击进入已添加到自选的股票详情页，点有下角的设自选-删除自选，会弹出toast：已从自选删除
+//        sleep(3000);
+        By zixuanTab=By.xpath("//*[contains(@text,'自选') and contains(@resource-id, 'tab_name')]");
+//        driver.findElement(zixuanTab).click();
+        WebDriverWait wait=new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.elementToBeClickable(zixuanTab)).click();
+
+        By firstStock=By.id("portfolio_stockName");//自选列表中的第一个股票
+        driver.findElement(firstStock).click();
+        sleep(2000);
+        By setZixuanBtn=By.xpath("//*[@text='设自选']");
+        By deleteZixuanBtn=By.xpath("//*[@text='删除自选']");
+        By addAllCommend=By.xpath("//*[@text='加股']");
+        driver.findElement(setZixuanBtn).click();
+        driver.findElement(deleteZixuanBtn).click();
+        driver.findElement(By.xpath("//*[contains(@text,'已从自选删除')]"));
+        driver.findElement(By.xpath("//*[@class='android.widget.Toast']"));
+        sleep(1000);
+        driver.findElement(addAllCommend);
+        driver.findElement(By.xpath("//*[contains(@text,'添加成功')]"));
+
+    }
+
+    @Test
+    public void testXianshiWait(){
+        By zixuanTab=By.xpath("//*[contains(@text,'自选') and contains(@resource-id, 'tab_name')]");
+        WebDriverWait wait=new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.elementToBeClickable(zixuanTab)).click();
+        sleep(3000);
 
     }
 
@@ -168,6 +217,7 @@ public class testAppium {
 
     @AfterAll
     public static void tearDown(){
+//        driver.stopRecordingScreen();
         driver.quit();
     }
 
