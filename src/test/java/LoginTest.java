@@ -1,15 +1,14 @@
 import driver.Driver;
+
+//import org.junit.Test;
 //import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+
 import page.LoginPage;
 import page.MainPage;
 import page.ProfilePage;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 //import static org.hamcrest.Matchers.equalTo;

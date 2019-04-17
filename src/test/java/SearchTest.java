@@ -9,7 +9,7 @@ import page.SearchPage;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 public class SearchTest {
     static MainPage mainPage;

@@ -1,11 +1,11 @@
 package justTest;
 
-import org.junit.runner.JUnitCore;
+//import org.junit.runner.JUnitCore;
 
 public class runClass {
 
     public static void main(String[] args){
-        JUnitCore.runClasses(testju.class);
+//        JUnitCore.runClasses(testju.class);
     }
 
 }
