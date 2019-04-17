@@ -2,18 +2,13 @@ package justTest;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.screenrecording.BaseStartScreenRecordingOptions;
-import io.appium.java_client.screenrecording.ScreenRecordingUploadOptions;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -36,8 +31,13 @@ public class testAppium {
         DesiredCapabilities capabilities=new DesiredCapabilities();
         capabilities.setCapability("platform","android");
         capabilities.setCapability("deviceName","P4M7N15425007120");
-        capabilities.setCapability("appPackage","com.xueqiu.android");
-        capabilities.setCapability("appActivity","com.xueqiu.android.view.WelcomeActivityAlias");
+        //雪球APP
+//        capabilities.setCapability("appPackage","com.xueqiu.android");
+//        capabilities.setCapability("appActivity","com.xueqiu.android.view.WelcomeActivityAlias");
+        //api demo apk
+        capabilities.setCapability("appPackage","io.appium.android.apis");
+        capabilities.setCapability("appActivity",".ApiDemos");
+        capabilities.setCapability("automationName","UIAutomator2");
         capabilities.setCapability("noReset","true");
         URL remoteUrl = new URL("http://localhost:4723/wd/hub");
         driver=new AndroidDriver(remoteUrl,capabilities);
@@ -50,10 +50,11 @@ public class testAppium {
         }
 //        System.out.println("-----"+driver.getPageSource());
 //        System.out.println("---------"+driver.getPageSource().contains("com.android.keyguard:id/pinEntry"));
-        if(driver.getPageSource().contains("com.android.keyguard:id/magazinelockscreen")){//当前页面是唤醒后的背景图页
+        if(driver.getPageSource().contains("com.android.keyguard:id/pinEntry")){//当前页面是唤醒后的背景图页
+//        if(driver.getPageSource().contains("com.android.keyguard:id/magazinelockscreen")){//当前页面是唤醒后的背景图页
             System.out.println("当前activity： "+driver.currentActivity());
-//            unlock_secret();//输入密码解锁
-            unlock_gesture();//手势密码解锁
+            unlock_secret();//输入密码解锁
+//            unlock_gesture();//手势密码解锁
         }
     }
 
@@ -186,7 +187,7 @@ public class testAppium {
         sleep(2000);
         By setZixuanBtn=By.xpath("//*[@text='设自选']");
         By deleteZixuanBtn=By.xpath("//*[@text='删除自选']");
-        By addAllCommend=By.xpath("//*[@text='加股']");
+        By addAllCommend=By.xpath("//*[@text='加自选']");
         driver.findElement(setZixuanBtn).click();
         driver.findElement(deleteZixuanBtn).click();
         driver.findElement(By.xpath("//*[contains(@text,'已从自选删除')]"));
@@ -198,6 +199,71 @@ public class testAppium {
     }
 
     @Test
+    public void test_Rotate(){
+        driver.rotate(ScreenOrientation.LANDSCAPE);//横屏
+        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='App']")).click();
+        driver.navigate().back();
+        driver.rotate(ScreenOrientation.PORTRAIT);//竖屏
+        sleep(2000);
+        driver.openNotifications();//手机的消息下拉框
+        sleep(3000);
+    }
+
+    @Test
+    public void test_logs(){
+        System.out.println(driver.manage().logs().getAvailableLogTypes());//当前driver支持的log类型，一般会打印[logcat, client]
+        for (Object o:driver.manage().logs().get("logcat").getAll().toArray()){ //打印logcat日志
+            System.out.println(o);
+        }
+    }
+
+    @Test
+    public void test_performance() throws Exception {
+        System.out.println(driver.getSupportedPerformanceDataTypes());
+        System.out.println(driver.getPerformanceData("com.xueqiu.android","memoryinfo",10));
+        System.out.println(driver.getPerformanceData("com.xueqiu.android","cpuinfo",10));
+        System.out.println(driver.getPerformanceData("com.xueqiu.android","batteryinfo",10));
+        System.out.println(driver.getPerformanceData("com.xueqiu.android","networkinfo",10));
+
+    }
+
+    @Test
+    public void test_findElementByAccessibilityId(){
+        System.out.println("----"+driver.findElement(By.xpath("//*")));
+        driver.findElement(By.id("android:id/text1")).click();//resource-id
+        sleep(1000);
+        driver.navigate().back();
+        driver.findElementByAccessibilityId("App").click();//content-desc
+        sleep(1000);
+        driver.navigate().back();
+        driver.findElement(By.name("App")).click();//不支持，会报错
+        sleep(3000);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Test
+    //显示等待
     public void testXianshiWait(){
         By zixuanTab=By.xpath("//*[contains(@text,'自选') and contains(@resource-id, 'tab_name')]");
         WebDriverWait wait=new WebDriverWait(driver,10);
@@ -220,32 +286,6 @@ public class testAppium {
 //        driver.stopRecordingScreen();
         driver.quit();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
