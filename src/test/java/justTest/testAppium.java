@@ -37,7 +37,7 @@ public class testAppium {
         //api demo apk
         capabilities.setCapability("appPackage","io.appium.android.apis");
         capabilities.setCapability("appActivity",".ApiDemos");
-        capabilities.setCapability("automationName","UIAutomator2");
+        capabilities.setCapability("automationName","uiautomator2");
         capabilities.setCapability("noReset","true");
         URL remoteUrl = new URL("http://localhost:4723/wd/hub");
         driver=new AndroidDriver(remoteUrl,capabilities);
@@ -173,28 +173,17 @@ public class testAppium {
     }
 
     @Test
-    //测试toast，失败！！！，总是获取不到，找不到元素
-    public void testToast(){
-        //步骤：进入自选，点击进入已添加到自选的股票详情页，点有下角的设自选-删除自选，会弹出toast：已从自选删除
-//        sleep(3000);
-        By zixuanTab=By.xpath("//*[contains(@text,'自选') and contains(@resource-id, 'tab_name')]");
-//        driver.findElement(zixuanTab).click();
-        WebDriverWait wait=new WebDriverWait(driver,10);
-        wait.until(ExpectedConditions.elementToBeClickable(zixuanTab)).click();
-
-        By firstStock=By.id("portfolio_stockName");//自选列表中的第一个股票
-        driver.findElement(firstStock).click();
-        sleep(2000);
-        By setZixuanBtn=By.xpath("//*[@text='设自选']");
-        By deleteZixuanBtn=By.xpath("//*[@text='删除自选']");
-        By addAllCommend=By.xpath("//*[@text='加自选']");
-        driver.findElement(setZixuanBtn).click();
-        driver.findElement(deleteZixuanBtn).click();
-        driver.findElement(By.xpath("//*[contains(@text,'已从自选删除')]"));
-        driver.findElement(By.xpath("//*[@class='android.widget.Toast']"));
-        sleep(1000);
-        driver.findElement(addAllCommend);
-        driver.findElement(By.xpath("//*[contains(@text,'添加成功')]"));
+    public void testToast(){//API Demos中，弹出toast步骤： Views - Popup Menu - MAKE A POUUP - Search
+        driver.findElement(By.xpath("//*[@text='Views']")).click();
+        driver.findElementByAndroidUIAutomator("" +
+                "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(" +
+                "new UiSelector().text(\"Popup Menu\").instance(0));").click();
+        driver.findElement(By.xpath("//*[contains(@text,'Make')]")).click();
+        driver.findElement(By.xpath("//*[@text='Search']")).click();
+        WebElement e=driver.findElement(By.xpath("//*[@class='android.widget.Toast']"));//class方式
+        System.out.println(e.getText());
+        WebElement e2=driver.findElement(By.xpath("//*[contains(@text,'Clicked popup menu item Search')]"));
+        System.out.println(e2.getText());
 
     }
 
@@ -236,7 +225,7 @@ public class testAppium {
         driver.findElementByAccessibilityId("App").click();//content-desc
         sleep(1000);
         driver.navigate().back();
-        driver.findElement(By.name("App")).click();//不支持，会报错
+//        driver.findElement(By.name("App")).click();//不支持，会报错
         sleep(3000);
     }
 
