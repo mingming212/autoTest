@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -173,21 +175,6 @@ public class testAppium {
     }
 
     @Test
-    public void testToast(){//API Demos中，弹出toast步骤： Views - Popup Menu - MAKE A POUUP - Search
-        driver.findElement(By.xpath("//*[@text='Views']")).click();
-        driver.findElementByAndroidUIAutomator("" +
-                "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(" +
-                "new UiSelector().text(\"Popup Menu\").instance(0));").click();
-        driver.findElement(By.xpath("//*[contains(@text,'Make')]")).click();
-        driver.findElement(By.xpath("//*[@text='Search']")).click();
-        WebElement e=driver.findElement(By.xpath("//*[@class='android.widget.Toast']"));//class方式
-        System.out.println(e.getText());
-        WebElement e2=driver.findElement(By.xpath("//*[contains(@text,'Clicked popup menu item Search')]"));
-        System.out.println(e2.getText());
-
-    }
-
-    @Test
     public void test_Rotate(){
         driver.rotate(ScreenOrientation.LANDSCAPE);//横屏
         driver.findElement(By.xpath("//android.widget.TextView[@content-desc='App']")).click();
@@ -201,7 +188,7 @@ public class testAppium {
     @Test
     public void test_logs(){
         System.out.println(driver.manage().logs().getAvailableLogTypes());//当前driver支持的log类型，一般会打印[logcat, client]
-        for (Object o:driver.manage().logs().get("logcat").getAll().toArray()){ //打印logcat日志
+        for(Object o:driver.manage().logs().get("logcat").getAll().toArray()){ //打印logcat日志
             System.out.println(o);
         }
     }
@@ -227,6 +214,48 @@ public class testAppium {
         driver.navigate().back();
 //        driver.findElement(By.name("App")).click();//不支持，会报错
         sleep(3000);
+    }
+
+    @Test
+    public void testXpath(){
+        sleep(5000);
+        List<WebElement> list=driver.findElements(By.xpath("//*"));
+        System.out.println("总个数 :"+list.size());
+        for(WebElement e:list){
+            System.out.println(e.toString());
+            e.getText();//可以获取页面上所有text
+        }
+    }
+
+    @Test
+    public void testToast(){//API Demos中，弹出toast步骤： Views - Popup Menu - MAKE A POUUP - Search
+        driver.findElement(By.xpath("//*[@text='Views']")).click();
+        //用UiScrollable的方式滚动查找
+        driver.findElementByAndroidUIAutomator("" +
+                "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(" +
+                "new UiSelector().text(\"Popup Menu\").instance(0));").click();
+        driver.findElement(By.xpath("//*[contains(@text,'Make')]")).click();
+        driver.findElement(By.xpath("//*[@text='Search']")).click();
+        WebElement e=driver.findElement(By.xpath("//*[@class='android.widget.Toast']"));//查找toast：class方式
+        System.out.println(e.getText());
+        System.out.println(driver.getPageSource());//pageSource里包含toast元素，版本：appium-uiautomator2-driver@1.33.1
+//        WebElement e3=driver.findElement(By.className("android.widget.Toast"));
+//        System.out.println("3333:"+e3.getText());
+
+        WebElement e2=driver.findElement(By.xpath("//*[contains(@text,'Clicked popup menu item Search')]"));//查找toast：toast文本的方式
+        System.out.println(e2.getText());
+
+    }
+
+    @Test
+    public void testUiSelector(){
+        //用UiSelector查找元素
+        driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Views\")").click();//必须用\"双引号，用单引号会报错
+        //用UiScrollable的方式滚动查找
+        driver.findElementByAndroidUIAutomator("" +
+                "new UiScrollable(new UiSelector().scrollable(true).instance(0))" +
+                ".scrollIntoView(new UiSelector().text(\"Popup Menu\").instance(0));").click();
+        sleep(5000);
     }
 
 
