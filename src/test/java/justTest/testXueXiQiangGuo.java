@@ -8,7 +8,10 @@ import io.appium.java_client.touch.offset.PointOption;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,14 +21,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by whs on 2019/3/11.
  */
-public class testAppium {
+public class testXueXiQiangGuo {
     static AndroidDriver driver;
 
     @BeforeAll
