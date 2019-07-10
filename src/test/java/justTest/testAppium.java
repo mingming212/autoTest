@@ -1,6 +1,7 @@
 package justTest;
 
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
@@ -167,7 +168,7 @@ public class testAppium {
 
     @Test
     //点击clickable=false的元素-》结果：可以点击，并跳转页面
-    public void testClickUnclickable() throws InterruptedException {
+    public void test_ClickUnclickable() throws InterruptedException {
         WebElement e=  driver.findElement(By.xpath("//*[@text='沪深' and @resource-id='com.xueqiu.android:id/button_text']"));
         System.out.println("是否可被点击："+e.getAttribute("clickable"));
         e.click();
@@ -217,7 +218,7 @@ public class testAppium {
     }
 
     @Test
-    public void testXpath(){
+    public void test_Xpath(){
         sleep(5000);
         List<WebElement> list=driver.findElements(By.xpath("//*"));
         System.out.println("总个数 :"+list.size());
@@ -228,7 +229,7 @@ public class testAppium {
     }
 
     @Test
-    public void testToast(){//API Demos中，弹出toast步骤： Views - Popup Menu - MAKE A POUUP - Search
+    public void test_Toast(){//API Demos中，弹出toast步骤： Views - Popup Menu - MAKE A POUUP - Search
         driver.findElement(By.xpath("//*[@text='Views']")).click();
         //用UiScrollable的方式滚动查找
         driver.findElementByAndroidUIAutomator("" +
@@ -248,7 +249,7 @@ public class testAppium {
     }
 
     @Test
-    public void testUiSelector(){
+    public void test_UiSelector(){
         //用UiSelector查找元素
         driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Views\")").click();//必须用\"双引号，用单引号会报错
         //用UiScrollable的方式滚动查找
@@ -259,7 +260,7 @@ public class testAppium {
     }
 
     @Test
-    public void testWebView(){
+    public void test_WebView(){
         System.out.println(driver.getPageSource());
 
 //        driver.findElement(By.xpath("//*[@text='沪深' and @resource-id='com.xueqiu.android:id/button_text']")).click();
@@ -283,6 +284,33 @@ public class testAppium {
 
     }
 
+    @Test
+    public void test_Voice(){
+        System.out.println("调节音量~");
+        driver.pressKeyCode(25);//音量减小，在MT7上，安卓6.0系统，减小的是媒体音量
+        driver.pressKeyCode(25);
+        sleep(3000);
+    }
+
+    @Test
+    //跳转到其他应用，如微信
+    public void test_JumpAnotherAPP(){
+        driver.startActivity(new Activity("com.tencent.mm","com.tencent.mm.ui.LauncherUI"));//跳转到微信
+        driver.findElement(By.xpath("//*[@text='王浩硕']")).click();//在聊天列表中，查找页面上叫"王浩硕"的聊天
+        driver.findElementById("com.tencent.mm:id/ami").sendKeys("123");//聊天页，文本框中输入
+        sleep(2000);
+
+    }
+
+    @Test
+    public void test_ExecShell() throws IOException {
+        sleep(3000);
+        String cmd="adb shell am start com.tencent.mm/.ui.LauncherUI";
+        Process process = Runtime.getRuntime().exec(cmd);
+
+//        driver.execute("adb shell am start com.tencent.mm/.ui.LauncherUI");//这种方式会报错，启动server时设置 --relaxed-security参数也不行
+        sleep(3000);
+    }
 
 
 

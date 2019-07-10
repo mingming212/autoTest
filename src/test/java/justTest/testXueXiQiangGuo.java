@@ -20,7 +20,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -32,12 +34,16 @@ public class testXueXiQiangGuo {
 
     @BeforeAll
     public static void setUp() throws IOException, InterruptedException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        System.out.println("当前时间："+df.format(new Date()));// new Date()为获取当前系统时间
         DesiredCapabilities capabilities=new DesiredCapabilities();
         capabilities.setCapability("platform","android");
         capabilities.setCapability("deviceName","P4M7N15425007120");
+//        capabilities.setCapability("udid","P4M7N15425007120");//写在这里没用，只能是启动server的时候设置参数
+
         //雪球APP
-        capabilities.setCapability("appPackage","com.xueqiu.android");
-        capabilities.setCapability("appActivity","com.xueqiu.android.view.WelcomeActivityAlias");
+        capabilities.setCapability("appPackage","cn.xuexi.android");
+        capabilities.setCapability("appActivity","com.alibaba.android.rimet.biz.SplashActivity");
         //api demo apk
 //        capabilities.setCapability("appPackage","io.appium.android.apis");
 //        capabilities.setCapability("appActivity",".ApiDemos");
@@ -122,168 +128,217 @@ public class testXueXiQiangGuo {
     }
 
     @Test
-    public void test_getAttribute() throws InterruptedException {
-//        Thread.sleep(3000);
-        try {
-            String resourceId=driver.findElement(By.id("com.xueqiu.android:id/tab_name")).getAttribute("resourceId");
-            System.out.println("1111111: "+resourceId);
-        }catch (Exception e){
-            System.out.println("未找到 3");
+    //阅读文章
+    public void testArticle() throws InterruptedException {
+        sleep(3000);
+        testXianshiWait("//*[@resource-id='cn.xuexi.android:id/home_bottom_tab_button_work' and @content-desc='学习']");//首页，即点击首页中间那个学习按钮
+        TouchAction action=new TouchAction(driver);
+        int count=0;
+        while(true) {
+            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+            System.out.println(""+count);
+            sleep(2000);
+            try{
+                driver.findElement(By.xpath("//*[contains(@text,'2019-')]")).click();
+//              -----翻到底，代表阅读完成
+                while(true){
+                    String oldpage=driver.getPageSource();
+                    action.press(PointOption.point(507, 1300)).moveTo(PointOption.point(507, 400)).release().perform();
+                    String newpage=driver.getPageSource();
+                    if(newpage.equals(oldpage)){
+                        break;
+                    }
+                }
+//                sleep(300);
+//              返回上层页面，即学习页，继续循环往下翻
+                driver.navigate().back();
+                count++;
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            if(count==12){//阅读结束
+                break;
+            }
         }
-        System.out.println("222222: ");
+    }
+
+//    @Test
+    public void testTouchAction() {
+        sleep(10000);
+        TouchAction action = new TouchAction(driver);
+        int count = 0;
+        while (true) {
+            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+
+//            sleep(300);
+            count++;
+            if(count>3){
+                break;
+            }
+        }
+
+    }
+
+
+
+    @Test
+    public void testVideo(){//视频
+        System.out.println("调节音量~");
+        driver.pressKeyCode(25);
+        driver.pressKeyCode(25);
+        sleep(3000);
+//        driver.findElementByAccessibilityId("视听学习").click();
+        testXianshiWait("//*[@resource-id='cn.xuexi.android:id/home_bottom_tab_text' and @text='视听学习']");
+
+        TouchAction action=new TouchAction(driver);
+        int count=0;
+        while(true) {
+            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+//            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+//            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+//            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+//            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+//            action.press(PointOption.point(507, 1400)).moveTo(PointOption.point(507, 400)).release().perform();
+            System.out.println(""+count);
+            try{
+                driver.findElement(By.xpath("//*[contains(@text,'2019-')]")).click();
+                sleep(50*1000);//50秒
+                action.press(PointOption.point(507, 1500)).moveTo(PointOption.point(507, 1100)).release().perform();
+                sleep(50*1000);
+                action.press(PointOption.point(507, 1500)).moveTo(PointOption.point(507, 1100)).release().perform();
+                sleep(30*1000);
+                action.press(PointOption.point(507, 1500)).moveTo(PointOption.point(507, 1100)).release().perform();
+
+//              返回上层页面，继续循环往下翻
+                driver.navigate().back();
+                count++;
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            if(count==8){//结束
+                break;
+            }
+        }
+    }
+
+//    @Test
+    public void testSubscribe(){//订阅----找不到减号和加号的区别，无法定位元素，放弃
+        testXianshiWait("//android.widget.TextView[@text='我的']");
+//        driver.findElement(By.xpath("//android.widget.TextView[@text='我的']")).click();
+        driver.findElementByAccessibilityId("学习积分").click();
+        TouchAction action =new TouchAction(driver);
+        //点击订阅的去看看按钮
+        while(true){
+            action.press(PointOption.point(500,1500)).moveTo(PointOption.point(500,500)).release().perform();
+            action.press(PointOption.point(500,1500)).moveTo(PointOption.point(500,500)).release().perform();
+            try{
+                WebElement element=driver.findElement(By.xpath("//*[@content-desc='订阅']/following-sibling::*[3]"));
+                String desc=element.getAttribute("content-desc");
+                System.out.println(desc);
+                if(desc.equals("去看看")){
+                    element.click();
+                    break;
+                }else if(desc.equals("已完成")){
+                    break;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+//        向下翻，查找有没有加号，有的话，点击加号，返回到首页
+        while(true){
+            action.press(PointOption.point(500,1500)).moveTo(PointOption.point(500,500)).release().perform();
+            try{
+                WebElement element=driver.findElement(By.xpath(""));//找不到对号和加号的区别，无法定位元素，放弃
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+//        返回到首页
+
     }
 
     @Test
-    public void test_longPress(){//长按
-        WebElement e=  driver.findElement(By.id("portfolio_stockName"));
-        TouchAction touch=new TouchAction(driver);
-        touch.longPress(ElementOption.element(e));
-        touch.release();
-        touch.perform();
+    public void testCollect() {//收藏
+//        testXianshiWait("(//*[@resource-id='cn.xuexi.android:id/home_bottom_tab_icon_group'])[3]");//首页，即点击首页中间那个学习按钮
+        testXianshiWait("//*[@resource-id='cn.xuexi.android:id/home_bottom_tab_button_work' and @content-desc='学习']");//首页，即点击首页中间那个学习按钮
+        TouchAction action = new TouchAction(driver);
+        int count = 0;
+        while (count < 3) {
+            action.press(PointOption.point(500, 1500)).moveTo(PointOption.point(500, 500)).release().perform();
+            action.press(PointOption.point(500, 1500)).moveTo(PointOption.point(500, 500)).release().perform();
+            action.press(PointOption.point(500, 1500)).moveTo(PointOption.point(500, 500)).release().perform();
+            driver.findElement(By.xpath("//*[contains(@text,'2019-')]")).click();
+            sleep(2000);
+            int deviceHeight=driver.manage().window().getSize().height;
+            if(deviceHeight==1920){//三星手机
+                action.press(PointOption.point(848, 1846)).release().perform();//网页上是webview，使用点击坐标的方式点击收藏按钮
 
-        //以下是设置长按保持时长的方式：
-        touch.longPress(new LongPressOptions().withElement(ElementOption.element(e)).withDuration(Duration.ofSeconds(6))).perform();
-        touch.longPress(new LongPressOptions().withPosition(PointOption.point(259,1071)).withDuration(Duration.ofSeconds(6))).perform();
+            }else {
+                action.press(PointOption.point(859, 1754)).release().perform();//网页上是webview，使用点击坐标的方式点击收藏按钮
+            }
+            driver.navigate().back();
+            count++;
+        }
     }
 
+
     @Test
-    public void test_getLocation() throws InterruptedException {
-        WebElement e=  driver.findElement(By.id("com.xueqiu.android:id/tv_search"));
-        Point point=e.getLocation();
-//        System.out.println("1----"+point.toString());
-        e.click();
-        driver.navigate().back();
-        driver.navigate().back();
+    public void testShare(){//分享
+        testXianshiWait("//*[@resource-id='cn.xuexi.android:id/home_bottom_tab_button_work' and @content-desc='学习']");//首页，即点击首页中间那个学习按钮
+        driver.findElement(By.xpath("//*[contains(@text,'2019-')]")).click();
+        for(int i=0;i<2;i++){
+            System.out.println("i= "+i);
+            driver.findElementById("cn.xuexi.android:id/my_news_avatar").click();//右上角的三个点
 
-        TouchAction touch =new TouchAction(driver);
-        touch.press(PointOption.point(353,105)).release().perform();//可点击
-        driver.navigate().back();
-        driver.navigate().back();
+            /*
+            //分享到微信圈
+            driver.findElement(By.xpath("(//*[@resource-id='cn.xuexi.android:id/img_gv_item'])[4]")).click();//第4个分享按钮，即分享给微信朋友圈
+            driver.findElement(By.id("com.tencent.mm:id/ki")).click();//发表按钮
+*/
 
-        touch.tap(PointOption.point(353,105)).perform();//可点击
-        Thread.sleep(10000);
+            /*//分享到微信好友
+            driver.findElement(By.xpath("(//*[@resource-id='cn.xuexi.android:id/img_gv_item'])[3]")).click();//第3个分享按钮，即分享给微信好友
+            sleep(3000);
+            //之后没有选择好友的操作，所以这里是假装分享给好友
+            driver.findElement(By.id("com.tencent.mm:id/kx")).click();//分享到微信后，在微信登录页，点击左上角的返回按钮
+            */
+            //分享到学习强国
+            driver.findElementById("cn.xuexi.android:id/img_gv_item").click();//第一个分享按钮，即分享到学习强国
+            sleep(3000);
+            //之后没有选择分享到哪里的操作，所以这里是假装分享
+            driver.findElement(By.xpath("//android.widget.ImageButton[@content-desc='返回']")).click();//分享到学习强国后，在分享页的选择联系人页面，点击左上角的返回
+
+            System.out.println("    i= "+i);
+        }
+        System.out.println("out~ ");
+        sleep(1000);
         driver.navigate().back();
-        driver.navigate().back();
-        Thread.sleep(10000);
     }
 
-    @Test
-    //点击clickable=false的元素-》结果：可以点击，并跳转页面
-    public void testClickUnclickable() throws InterruptedException {
-        WebElement e=  driver.findElement(By.xpath("//*[@text='沪深' and @resource-id='com.xueqiu.android:id/button_text']"));
-        System.out.println("是否可被点击："+e.getAttribute("clickable"));
-        e.click();
-        Thread.sleep(10000);
-    }
-
-    @Test
-    public void test_Rotate(){
-        driver.rotate(ScreenOrientation.LANDSCAPE);//横屏
-        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='App']")).click();
+//    @Test
+    public void testBack(){
+        testXianshiWait("//*[@resource-id='cn.xuexi.android:id/home_bottom_tab_button_work' and @content-desc='学习']");//首页，即点击首页中间那个学习按钮
+        driver.findElement(By.xpath("//*[contains(@text,'2019-')]")).click();
+//        sleep(1000);
         driver.navigate().back();
-        driver.rotate(ScreenOrientation.PORTRAIT);//竖屏
-        sleep(2000);
-        driver.openNotifications();//手机的消息下拉框
         sleep(3000);
     }
 
-    @Test
-    public void test_logs(){
-        System.out.println(driver.manage().logs().getAvailableLogTypes());//当前driver支持的log类型，一般会打印[logcat, client]
-        for(Object o:driver.manage().logs().get("logcat").getAll().toArray()){ //打印logcat日志
-            System.out.println(o);
-        }
-    }
-
-    @Test
-    public void test_performance() throws Exception {
-        System.out.println(driver.getSupportedPerformanceDataTypes());
-        System.out.println(driver.getPerformanceData("com.xueqiu.android","memoryinfo",10));
-        System.out.println(driver.getPerformanceData("com.xueqiu.android","cpuinfo",10));
-        System.out.println(driver.getPerformanceData("com.xueqiu.android","batteryinfo",10));
-        System.out.println(driver.getPerformanceData("com.xueqiu.android","networkinfo",10));
-
-    }
-
-    @Test
-    public void test_findElementByAccessibilityId(){
-        System.out.println("----"+driver.findElement(By.xpath("//*")));
-        driver.findElement(By.id("android:id/text1")).click();//resource-id
-        sleep(1000);
-        driver.navigate().back();
-        driver.findElementByAccessibilityId("App").click();//content-desc
-        sleep(1000);
-        driver.navigate().back();
-//        driver.findElement(By.name("App")).click();//不支持，会报错
+//    @Test
+    public void testVoice(){
+        System.out.println("调节音量~");
+        driver.pressKeyCode(25);//音量减小，在MT7上，安卓6.0系统，减小的是媒体音量
+        driver.pressKeyCode(25);
         sleep(3000);
     }
 
-    @Test
-    public void testXpath(){
-        sleep(5000);
-        List<WebElement> list=driver.findElements(By.xpath("//*"));
-        System.out.println("总个数 :"+list.size());
-        for(WebElement e:list){
-            System.out.println(e.toString());
-            e.getText();//可以获取页面上所有text
-        }
-    }
-
-    @Test
-    public void testToast(){//API Demos中，弹出toast步骤： Views - Popup Menu - MAKE A POUUP - Search
-        driver.findElement(By.xpath("//*[@text='Views']")).click();
-        //用UiScrollable的方式滚动查找
-        driver.findElementByAndroidUIAutomator("" +
-                "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(" +
-                "new UiSelector().text(\"Popup Menu\").instance(0));").click();
-        driver.findElement(By.xpath("//*[contains(@text,'Make')]")).click();
-        driver.findElement(By.xpath("//*[@text='Search']")).click();
-        WebElement e=driver.findElement(By.xpath("//*[@class='android.widget.Toast']"));//查找toast：class方式
-        System.out.println(e.getText());
-        System.out.println(driver.getPageSource());//pageSource里包含toast元素，版本：appium-uiautomator2-driver@1.33.1
-//        WebElement e3=driver.findElement(By.className("android.widget.Toast"));
-//        System.out.println("3333:"+e3.getText());
-
-        WebElement e2=driver.findElement(By.xpath("//*[contains(@text,'Clicked popup menu item Search')]"));//查找toast：toast文本的方式
-        System.out.println(e2.getText());
-
-    }
-
-    @Test
-    public void testUiSelector(){
-        //用UiSelector查找元素
-        driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Views\")").click();//必须用\"双引号，用单引号会报错
-        //用UiScrollable的方式滚动查找
-        driver.findElementByAndroidUIAutomator("" +
-                "new UiScrollable(new UiSelector().scrollable(true).instance(0))" +
-                ".scrollIntoView(new UiSelector().text(\"Popup Menu\").instance(0));").click();
-        sleep(5000);
-    }
-
-    @Test
-    public void testWebView(){
-        System.out.println(driver.getPageSource());
-
-//        driver.findElement(By.xpath("//*[@text='沪深' and @resource-id='com.xueqiu.android:id/button_text']")).click();
-        driver.findElement(By.xpath("//*[@text='港美' and @resource-id='com.xueqiu.android:id/button_text']")).click();
-//        driver.findElementByAccessibilityId("立即开户").click();
-        driver.getContextHandles().toString();
-        driver.getContext();
-//        System.out.println("111111 "+driver.getContextHandles().toString());
-        for(Object s:driver.getContextHandles()){
-            System.out.println("2 "+s.toString());
-        }
-        sleep(4000);
-        for(Object s:driver.getContextHandles()){
-            System.out.println("------"+driver.getContextHandles().size());
-            System.out.println("3 "+s.toString());
-        }
-
-        driver.context("WEBVIEW_com.xueqiu.android");
-        System.out.println(driver.getPageSource());
-
-
-    }
 
 
 
@@ -293,24 +348,14 @@ public class testXueXiQiangGuo {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    @Test
+//    @Test
     //显示等待
-    public void testXianshiWait(){
-        By zixuanTab=By.xpath("//*[contains(@text,'自选') and contains(@resource-id, 'tab_name')]");
+    public void testXianshiWait(String xpath){
+//        By waitElement=By.xpath("//*[contains(@text,'自选') and contains(@resource-id, 'tab_name')]");
+
+        By waitElement=By.xpath(xpath);
         WebDriverWait wait=new WebDriverWait(driver,10);
-        wait.until(ExpectedConditions.elementToBeClickable(zixuanTab)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(waitElement)).click();
         sleep(3000);
 
     }
