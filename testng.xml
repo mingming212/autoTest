@@ -3,43 +3,7 @@
 <suite name="All Test Suite">
     <test verbose="2" preserve-order="true" name="/Users/helena.liu/IdeaProjects/autoTest">
         <classes>
-            <!--
-            <class name="justTest.mainTest">
-                <methods>
-                    <include name="sampleTest"/>
-                    <include name="testTouchAction"/>
-                    <include name="testXueqiu"/>
-                </methods>
-            </class>
-            <class name="justTest.testAppium">
-                <methods>
-                    <include name="test_getAttribute"/>
-                    <include name="test_longPress"/>
-                    <include name="test_getLocation"/>
-                    <include name="test_ClickUnclickable"/>
-                    <include name="test_Rotate"/>
-                    <include name="test_logs"/>
-                    <include name="test_performance"/>
-                    <include name="test_findElementByAccessibilityId"/>
-                    <include name="test_Xpath"/>
-                    <include name="test_Toast"/>
-                    <include name="test_UiSelector"/>
-                    <include name="test_WebView"/>
-                    <include name="test_Voice"/>
-                    <include name="test_JumpAnotherAPP"/>
-                    <include name="test_ExecShell"/>
-                    <include name="testXianshiWait"/>
-                </methods>
-            </class>
--->
-            <class name="justTest.testXueXiQiangGuo">
-                <methods>
-                    <include name="testArticle"/>
-                    <include name="testVideo"/>
-                    <include name="testCollect"/>
-                    <include name="testShare"/>
-                </methods>
-            </class>
+
         </classes>
     </test>
 </suite>
