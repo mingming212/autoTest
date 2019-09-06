@@ -7,6 +7,7 @@ import page.MainPage;
 import page.SearchPage;
 
 import java.util.ArrayList;
+import static org.junit.matchers.JUnitMatchers.*;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -34,7 +35,7 @@ public class SearchTest {
     @Test
     public void 选择(){
         ArrayList<String> array= searchPage.search("mi").addSelected();
-//        assertThat(array,hasItems("com.xueqiu.android:id/followed_btn","com.xueqiu.android:id/follow_btn"));
+        assertThat(array,hasItems("com.xueqiu.android:id/followed_btn","com.xueqiu.android:id/follow_btn"));
     }
 
 

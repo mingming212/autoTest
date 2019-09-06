@@ -58,6 +58,11 @@ public class ZixuanTest {
     }
 
 
+    @org.testng.annotations.Test
+    public void testaa(){
+        System.out.println("1111111111Zixuan");
+    }
+
     @AfterAll
     static void tearDowm(){
         Driver.getCurrentDriver().quit();
