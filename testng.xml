@@ -3,6 +3,15 @@
 <suite name="All Test Suite">
     <test verbose="2" preserve-order="true" name="/Users/helena.liu/IdeaProjects/autoTest">
         <classes>
+            <class name="LoginTest"></class>
+            <class name="SearchTest"></class>
+            <class name="ZixuanTest">
+                <!--                                <methods>
+                                                    <include name="testShare"/>
+                                                    <include name="testVideo"/>
+                                                </methods>-->
+            </class>
+
 
         </classes>
     </test>

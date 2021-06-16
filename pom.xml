@@ -30,13 +30,12 @@
                         <exclude></exclude>
                     </excludes>
                 </configuration>
-                <!--
-                <configuration>
+<!--                <configuration>
                     <suiteXmlFiles>
+                    //case里的测试方法都是Junit的，若想用testng控制执行，除了改这里，还需要修改case
                         <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                </configuration>
-                -->
+                </configuration>-->
             </plugin>
         </plugins>
     </build>
